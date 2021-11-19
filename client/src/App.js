@@ -1,25 +1,26 @@
-import React from 'react';
-import { Dashboard, Login, PrivateRoute, AuthWrapper, Error } from './pages';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import React from 'react'
+import {Container} from 'react-bootstrap';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import LandingScreen from './screens/LandingScreen';
+import ErrorScreen from './screens/ErrorScreen';
 
-function App() {
+const App=()=> {
   return (
     <Router>
-      <Switch>
-        
-        <Route path='/' exact={true}>
-            <Dashboard></Dashboard>
-        </Route>
-
-        <Route path='/login' exact={true}>
-            <Login />
-        </Route>
-
-        <Route path='*'>
-           <Error></Error>
-        </Route>
-
-      </Switch>
+        <Header/>
+        <main className="py-3">
+        <Switch>
+            <Route path='/'               component={LandingScreen} exact={true}/>
+            <Route path='/register'       component={RegisterScreen} exact={true}/>
+            <Route path='/login'          component={LoginScreen} exact={true}/>
+            <Route path='*'               component={ErrorScreen} />
+          </Switch>
+        </main>
+        <Footer/>
     </Router>
   );
 }
