@@ -16,11 +16,11 @@ const userSchema = mongoose.Schema(
             type:String,
             required:true
         },
-        isTeacher:{
-            type:String,
-            required:true,
-            default:false
-        }
+        createdClasses : [String]
+        // enrolledClasses:{
+        //     type: Object,
+        //     {classCode: {type: String}, score:{type: number}, quizleft:{}}
+        // }
     },
     {
         timestamps:true

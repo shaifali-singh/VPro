@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import LandingScreen from './screens/LandingScreen';
+import HomeScreen from './screens/HomeScreen';
 import ErrorScreen from './screens/ErrorScreen';
 
 const App=()=> {
@@ -15,6 +16,7 @@ const App=()=> {
         <main className="py-3">
         <Switch>
             <Route path='/'               component={LandingScreen} exact={true}/>
+            <Route path='/home'               component={HomeScreen} exact={true}/>
             <Route path='/register'       component={RegisterScreen} exact={true}/>
             <Route path='/login'          component={LoginScreen} exact={true}/>
             <Route path='*'               component={ErrorScreen} />

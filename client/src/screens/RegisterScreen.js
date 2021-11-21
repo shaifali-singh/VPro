@@ -12,14 +12,14 @@ const RegisterScreen = ({location,history}) => {
     const [email,setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [selectedOption, setSelectedOption] = useState('Teacher');
+    // const [selectedOption, setSelectedOption] = useState('Teacher');
     const [message, setMessage] = useState(null);
 
     const dispatch = useDispatch ();
     const userRegister = useSelector(state=>state.userRegister);
     const {loading,error,userInfo} = userRegister;
 
-    const redirect = location.search? location.search.split('=')[1]:'/';
+    const redirect = location.search? location.search.split('=')[1]:'/home';
 
     useEffect(() => {
         if(userInfo){
@@ -32,9 +32,9 @@ const RegisterScreen = ({location,history}) => {
             if(password!==confirmPassword){
                 setMessage('Password do not match!')
             }else{
-                let isTeacher = selectedOption==='Teacher'? true:false ;
-                console.log(name,email,password, isTeacher); //testing
-                dispatch(register(name,email,password, isTeacher))
+                // let isTeacher = selectedOption==='Teacher'? true:false ;
+                console.log(name,email,password); //testing
+                dispatch(register(name,email,password))
             }
     }
 
@@ -89,7 +89,7 @@ const RegisterScreen = ({location,history}) => {
                         onChange={e=>setConfirmPassword(e.target.value)}
                     ></Form.Control>
                 </Form.Group>
-                <Form.Group controlId='isTeacher'>
+                {/* <Form.Group controlId='isTeacher'>
                     <Form.Label>
                         Are you a  ?
                     </Form.Label>
@@ -109,7 +109,7 @@ const RegisterScreen = ({location,history}) => {
                             checked={selectedOption === 'Student'} 
                             onChange={e=>setSelectedOption(e.target.value)}
                         />
-                </Form.Group>
+                </Form.Group> */}
                 <Button type="submit" variant="primary">Register</Button>
             </Form>
             <Row className="py-3">

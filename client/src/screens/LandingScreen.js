@@ -8,7 +8,7 @@ const LandingScreen = () => {
 
     return (
         <>
-        <h1>Home Page</h1>
+        <h1>Landing Page</h1>
        
         </>
     )

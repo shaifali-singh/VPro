@@ -4,7 +4,7 @@ const generateToken= require('../utils/generateToken');
 
  //Create a new User
 const registerUser = asyncHandler(async (req, res) => {
-    const { name,email, password, isTeacher } = req.body
+    const { name,email, password } = req.body
   
     const existUser = await User.findOne({ email })
   
@@ -16,8 +16,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const user = await User.create({
         name,
         email,
-        password,
-        isTeacher
+        password
     })
 
     if(user){
@@ -25,7 +24,6 @@ const registerUser = asyncHandler(async (req, res) => {
                  _id: user._id,
                 name: user.name,
                 email: user.email,
-                isTeacher: user.isTeacher,
                 token: generateToken(user._id),
         })
 
