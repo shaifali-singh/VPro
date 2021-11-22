@@ -38,3 +38,40 @@ export const createClass = (className) => async (dispatch) => {
     }
   }
 
+  export const joinClass = (classCode) => async (dispatch) => {
+    try {
+      dispatch({
+        type: 'JOIN_CLASS_REQ',
+      })
+  
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization":"Bearer "+ localStorage.getItem("jwt")
+        },
+      }
+  
+      const { data } = await axios.post(
+        '/api/class/join',
+        { classCode},
+        config
+      )
+  
+      dispatch({
+        type: 'JOIN_CLASS_SUCCESS',
+        payload: data,
+      })
+
+      console.log(data) //testing
+
+    } catch (error) {
+      dispatch({
+        type: 'JOIN_CLASS_FAIL',
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }
+

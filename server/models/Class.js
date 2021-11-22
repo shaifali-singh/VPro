@@ -14,12 +14,20 @@ const classSchema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
        },
-       enrolledStudents : [
+       enrolledStudents : [ 
            {
-               type: mongoose.Schema.Types.ObjectId,
-               ref: "User"
-           }
-       ]
+               type: mongoose.Schema.Types.ObjectId ,
+               ref : "User"
+
+           } ],
+           
+        quizzes :[
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Quiz"
+            }
+        ]   
+
     },
     {
         timestamps:true
@@ -28,4 +36,4 @@ const classSchema = mongoose.Schema(
 
 
 const Class = mongoose.model('Class',classSchema);
-module.exports =Class
+module.exports = Class

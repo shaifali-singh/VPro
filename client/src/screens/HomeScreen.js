@@ -5,11 +5,12 @@ import {Form, Button, Row, Col} from 'react-bootstrap';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
-import { createClass } from '../actions/classAction';
+import { createClass, joinClass } from '../actions/classAction';
 
 const LandingScreen = ({location, history}) => { 
 
     const [className,setClassName] = useState('');
+    const [classCode, setClassCode] = useState('');
 
     const userLogin = useSelector(state=>state.userLogin);
     const {loading,error,userInfo} = userLogin;
@@ -17,6 +18,9 @@ const LandingScreen = ({location, history}) => {
     const dispatch = useDispatch ();
     const newClass = useSelector(state=>state.newClass);
     const {error:classError,newClassInfo} = newClass;
+
+    const joinNewClass = useSelector(state=>state.joinNewClass);
+    const {error:joinClassError, joinClassInfo} = joinNewClass;
 
     const redirect = location.search? location.search.split('=')[1]:'/login';
 
@@ -29,6 +33,11 @@ const LandingScreen = ({location, history}) => {
     const submitHandler =(e)=>{
             e.preventDefault();
             dispatch(createClass(className))
+    }
+
+    const joinClasssubmitHandler = (e)=>{
+        e.preventDefault();
+        dispatch(joinClass(classCode));
     }
 
 
@@ -66,6 +75,26 @@ const LandingScreen = ({location, history}) => {
                        <h5>Share this code to your students  <i>{newClassInfo.classCode}</i></h5> 
                                                   : <p></p>
                     }
+
+                    <FormContainer>
+                        <h4>Join a Class</h4>
+                        {joinClassError && <Message variant='danger'>{joinClassError}</Message>}
+                        <Form onSubmit={joinClasssubmitHandler}>
+                            <Form.Group controlId='className'>
+                                <Form.Label>
+                                    Class Code
+                                </Form.Label>
+                                <Form.Control
+                                    type="classCode"
+                                    placeholder="Enter the Class Code"
+                                    value={classCode}
+                                    onChange={e=>setClassCode(e.target.value)}
+                                ></Form.Control>
+                            </Form.Group>
+                            
+                            <Button type="submit" variant="primary">Join Class</Button>
+                        </Form>
+                    </FormContainer>
             
             </div> 
         

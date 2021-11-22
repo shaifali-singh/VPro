@@ -1,6 +1,39 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
+const attemptedQuizSchema = mongoose.Schema(
+    {
+        quiz_id :{
+            type: mongoose.Schema.Types.ObjectId,
+            ref:"Quiz"
+        },
+        quiz_index :{
+            type: Number,
+            required: true
+        },
+        quiz_score :{
+            type: Number,
+            required: true
+        }
+    }
+)
+
+const enrolledClassSchema = mongoose.Schema({
+
+    classId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Class"
+    },
+    totalScore:{
+        type:Number,
+        required: true,
+        default:0
+    },
+
+    attemptedQuiz: [{type: attemptedQuizSchema, default: null}]
+
+})
+
 const userSchema = mongoose.Schema(
     {
         name:{
@@ -16,11 +49,14 @@ const userSchema = mongoose.Schema(
             type:String,
             required:true
         },
-        createdClasses : [String]
-        // enrolledClasses:{
-        //     type: Object,
-        //     {classCode: {type: String}, score:{type: number}, quizleft:{}}
-        // }
+
+        createdClass : [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Class"
+        }],
+
+        enrolledClass : [enrolledClassSchema]
+
     },
     {
         timestamps:true
