@@ -5,7 +5,7 @@ const Class = require('../models/Class');
 const User = require('../models/User');
 
 
- //Create a new Class
+// CREATE A NEW CLASS
 const createClass = asyncHandler(async (req, res) => {
     const { className } = req.body
   
@@ -48,7 +48,7 @@ const createClass = asyncHandler(async (req, res) => {
     createClass
 }
 
- //Join a Class
+ //JOIN A CLASS
  const joinClass = asyncHandler(async (req, res) => {
      
     const { classCode } = req.body
