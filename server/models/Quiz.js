@@ -10,12 +10,13 @@ const optionSchema = mongoose.Schema({
 const questionSchema = mongoose.Schema({
     question: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     answers: [optionSchema],
 
     answer: {
-      type: Number,
+      type: String,
       required: true
     },
 
