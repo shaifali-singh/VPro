@@ -1,35 +1,31 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const optionSchema = new Schema({
+const optionSchema = mongoose.Schema({
   option: {
     type: String,
     required: true
   }
 });
 
-const questionSchema = new Schema({
+const questionSchema = mongoose.Schema({
     question: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     answers: [optionSchema],
 
     answer: {
-      type: Number,
+      type: String,
       required: true
     },
-
-    explanation:{
-      type: String,
-      default: ""
-    }
 
 }, {
     timestamps: true
 });
 
-const quizSchema = new Schema({
+const quizSchema = mongoose.Schema(
+  {
     name: {
         type: String,
         required: true,
@@ -40,11 +36,6 @@ const quizSchema = new Schema({
         type: String,
         required: true
     },
-
-    // isEnabled: {
-    //     type: Boolean,
-    //     default: true
-    // },
 
     questions: [questionSchema],
 
@@ -64,10 +55,18 @@ const quizSchema = new Schema({
         default: 0
       }
 
+    },
+
+    classId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Class"
     }
-}, {
+
+  },
+  {
     timestamps: true
-});
+  }
+);
 
 const Quiz = mongoose.model('Quiz', quizSchema);
 

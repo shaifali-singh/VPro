@@ -5,8 +5,7 @@ const generateToken= require('../utils/generateToken');
 
 
 
-
- //Create a new User
+// CREATE A NEW USER
 const registerUser = asyncHandler(async (req, res) => {
 
     const { name,email, password } = req.body
@@ -40,7 +39,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   }) 
 
-  //Authenticate User
+// AUTHENTICATE USER
 const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body
   
@@ -62,7 +61,7 @@ const authUser = asyncHandler(async (req, res) => {
     }
   })
 
-  //Get a Particular User
+//GET A USER BY ID
 const getUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id).select('-password') ;
   if(user){
