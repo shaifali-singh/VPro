@@ -41,6 +41,7 @@ export const login = (email, password) => async (dispatch) => {
 
   export const logout=()=>(dispatch)=>{
     localStorage.removeItem('userInfo')
+    localStorage.removeItem('jwt');
     localStorage.removeItem('newClassInfo')
     dispatch({type:"USER_LOGOUT"})
     document.location.href='/login'

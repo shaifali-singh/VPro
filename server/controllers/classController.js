@@ -18,6 +18,8 @@ const createClass = asyncHandler(async (req, res) => {
 
     const randCode = randomstring.generate(8);
     
+    console.log("Class created", req.user._id)
+
     const newClass = await Class.create({
         className,
         classCode: randCode,
@@ -80,7 +82,7 @@ const createClass = asyncHandler(async (req, res) => {
 
         res.status(201).json({
                 _id: req.user._id,
-                classCode 
+                className: foundClass.className 
         })
 
 
@@ -99,37 +101,52 @@ const getClassById = asyncHandler(async (req, res)=>{
 
 })
 
-//GET ALL CREATED CLASSES
-const getAllCreatedClass = asyncHandler(async (req, res) => {
-     
-        User.findById(req.params.id)
-        .populate('createdClass').exec((err, classes)=>{
-                res.status(200).json({
-                    _id: req.user._id,
-                    createdClass : classes.createdClass
-                })
+//GET ALL CLASS OF A USER
+const getAllClassOfUser = asyncHandler(async(req, res)=>{
+
+        const classes = await User.findById(req.params.id).populate('createdClass')
+
+        const classes2 = await User.findById(req.params.id).populate('enrolledClass.classId')
+
+        res.status(200).json({
+            createdClass: classes.createdClass,
+            enrolledClass: classes2.enrolledClass
         })
 
 })
 
-//GET ALL ENROLLED CLASSES
-const getAllEnrolledClass = asyncHandler(async (req, res) => {
+//GET ALL CREATED CLASSES
+// const getAllCreatedClass = asyncHandler(async (req, res) => {
      
-    User.findById(req.params.id)
-    .populate('enrolledClass.classId').exec((err, classes)=>{
+//         User.findById(req.params.id)
+//         .populate('createdClass').exec((err, classes)=>{
+//                 res.status(200).json({
+//                     _id: req.user._id,
+//                     createdClass : classes.createdClass
+//                 })
+//         })
 
-            res.status(200).json({
-                _id: req.user._id,
-                enrolledClass : classes.enrolledClass
-            })
-    })
+// })
 
-})
+//GET ALL ENROLLED CLASSES
+// const getAllEnrolledClass = asyncHandler(async (req, res) => {
+     
+//     User.findById(req.params.id)
+//     .populate('enrolledClass.classId').exec((err, classes)=>{
+
+//             res.status(200).json({
+//                 _id: req.user._id,
+//                 enrolledClass : classes.enrolledClass
+//             })
+//     })
+
+// })
 
 module.exports={
     createClass,
     joinClass,
     getClassById,
-    getAllCreatedClass,
-    getAllEnrolledClass
+    getAllClassOfUser
+    // getAllCreatedClass,
+    // getAllEnrolledClass
 }

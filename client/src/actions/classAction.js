@@ -75,3 +75,35 @@ export const createClass = (className) => async (dispatch) => {
     }
   }
 
+
+  //GET ALL CLASS OF A USER
+  export const getAllClassOfUser = (id) => async (dispatch) => {
+    try {
+      dispatch({
+        type: 'CLASS_DETAILS_REQ',
+      })
+  
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization":"Bearer "+ localStorage.getItem("jwt")
+        },
+      }
+  
+      const { data } = await axios.get(
+        `/api/class/all/${id}`,config )
+  
+      dispatch({
+        type: 'CLASS_DETAILS_SUCCESS',
+        payload: data,
+      })
+    } catch (error) {
+      dispatch({
+        type: 'CLASS_DETAILS_FAIL',
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  } 

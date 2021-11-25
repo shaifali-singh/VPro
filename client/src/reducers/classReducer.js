@@ -28,3 +28,19 @@ export const joinClassReducer = (state={},action)=>{
             return state    
     }
 }
+
+export const classDetailOfUserReducer = (state={},action)=>{
+    switch(action.type){
+        case 'CLASS_DETAILS_REQ':
+            return {loading:true}
+
+        case 'CLASS_DETAILS_SUCCESS':
+            return {loading:false, allClassOfUser:action.payload}
+            
+        case 'CLASS_DETAILS_FAIL':
+            return {loading:false, error:action.payload}
+        default:
+            return state    
+    }
+}
+

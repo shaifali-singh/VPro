@@ -1,13 +1,14 @@
 import {combineReducers,applyMiddleware, createStore,compose} from 'redux';
 import thunk from 'redux-thunk';
 import { userLoginReducer, userRegisterReducer, } from './reducers/userReducer';   
-import { createClassReducer, joinClassReducer } from './reducers/classReducer';
+import { createClassReducer, joinClassReducer, classDetailOfUserReducer } from './reducers/classReducer';
 
 const reducer = combineReducers({
     userLogin: userLoginReducer,
     userRegister : userRegisterReducer,
     newClass : createClassReducer,
-    joinNewClass : joinClassReducer
+    joinNewClass : joinClassReducer,
+    allClass: classDetailOfUserReducer
 });
 
 

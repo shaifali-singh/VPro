@@ -135,13 +135,18 @@ const allowUserForQuiz = asyncHandler(async(req, res)=>{
         }
     }
 
+    console.log(first_smallest_missing_index, curr_quiz_index) //testing
+
     if(first_smallest_missing_index!=curr_quiz_index)
     {
         res.status(400)
         throw new Error('You cannot take this quiz. Please attempt previous quiz')
     }
 
-    res.status(400).json({message:"You can take this quiz"});
+    res.status(200).json({
+        quiz,
+        message:"You can take this quiz"
+    });
 
 })
 
@@ -168,8 +173,6 @@ const evaluateQuiz = asyncHandler(async(req, res) =>{
 
     const quizQuestions = quiz.questions; //array of object of questions of quiz
 
-    
-
 
     let score = 0
     //check each question's answer
@@ -189,32 +192,7 @@ const evaluateQuiz = asyncHandler(async(req, res) =>{
 
 	})
 
-    //update total Score in a class of a user
-    // const enrolledClassOfUser = (user.enrolledClass).find(x=> String(x.classId)===String(class_id));
-    // const newScore = enrolledClassOfUser.totalScore + score;
-
-    // console.log(newScore) //testing
-
-    // const myClass = await User.findOneAndUpdate(
-
-    //     {"_id":req.user._id},
-
-    //     { "enrolledClass": { 
-    //         $elemMatch: { 
-    //             "classId" : class_id
-    //          }
-    //     }},
-
-    //     {$set:{totalScore:newScore}},
-    //     {new: true}
-
-    // )
-
-    // console.log(myClass) //testing
-
-    // res.status(200).json(user);
-
-    //update attempted Quiz list of the user
+    //update attempted Quiz list of the user  --->>THIS NEDDS FIXING, 
     const myClass = await User.findOne(
 
         {"_id":req.user._id},
@@ -227,20 +205,20 @@ const evaluateQuiz = asyncHandler(async(req, res) =>{
     )
 
     console.log(myClass) //testing
-    const quizarray = await (myClass.enrolledClass).find(x=> String(x.classId)===String(class_id));
-    console.log(quizarray) //testing
-    quizarray.attemptedQuiz.push({
+    const particularClass = await (myClass.enrolledClass).find(x=> String(x.classId)===String(class_id));
+    console.log(particularClass) //testing
+    particularClass.attemptedQuiz.push({
         quiz_id,
         quiz_score: score,
         quiz_index
     })
-    // quizarray.save()
+    
+    //update total Score in a class of a user
+    particularClass.totalScore = particularClass.totalScore + score;
+    // particularClass.save();
     myClass.save();
 
-    res.status(200).json(myClass);
-
-    //save score of the user
-
+    res.status(200).json({score, myClass});
 
 
 })
