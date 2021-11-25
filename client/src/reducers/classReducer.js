@@ -44,3 +44,19 @@ export const classDetailOfUserReducer = (state={},action)=>{
     }
 }
 
+export const classProfileReducer = (state={},action)=>{
+    switch(action.type){
+        case 'CLASS_PROFILE_REQ':
+            return {loading:true}
+
+        case 'CLASS_PROFILE_SUCCESS':
+            return {loading:false, classProfile:action.payload}
+            
+        case 'CLASS_PROFILE_FAIL':
+            return {loading:false, error:action.payload}
+        default:
+            return state    
+    }
+}
+
+

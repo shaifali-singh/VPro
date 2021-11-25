@@ -22,17 +22,57 @@ const HomeScreen = ({location, history}) => {
     useEffect(() => {
         if(!userInfo){
             history.push(redirect)
-        }else{
+        }else if(!allClassOfUser){
             dispatch(getAllClassOfUser(userInfo._id))
         }
 
-        if(allClass){
-            console.log(allClassOfUser)
-        }
+    }, [history,userInfo,redirect, allClassOfUser])
 
-    }, [history,userInfo,redirect])
+    return (
+        <div >
+            <h3 my-2 >My Enrolled Classes</h3>
+            <Row className="justify-content-center">
+            { allClassOfUser?
+                allClassOfUser.enrolledClassArray.map(({_id, className, totalScore}) =>{
+                    return(
+                        <div key={_id} >
+                        
+                            <Col>
+                                <h6>Class Name </h6> <a href={'/class/' + _id}>{className}</a>
+                            </Col>
+                            <Col>
+                                <h6>Class Score</h6> {totalScore}
+                            </Col>
+                        
+                        </div>
+                    )
+                })
+                :<h5>Loading!...</h5>
+            }
+            </Row>
+            <h3>My Created Classes</h3>
+            <Row className="justify-content-center">
+            { allClassOfUser?
+                allClassOfUser.createdClassArray.map(({_id, className, numberOfEnrolledStudents}) =>{
+                    return(
+                        <div key={_id} >
+                        
+                            <Col>
+                                <h6>Class Name</h6> <a href={'/class/' + _id}>{className}</a>
+                            </Col>
+                            <Col>
+                                <h6>Number of Enrolled Students</h6> {numberOfEnrolledStudents}
+                            </Col>
+                        
+                        </div>
+                    )
+                })
+                :<h5>Loading!...</h5>
+            }
+            </Row>
+        </div>
+    )
 
-    return <h1> Welcome to your dashboard</h1>
 
 
     // const [className,setClassName] = useState('');

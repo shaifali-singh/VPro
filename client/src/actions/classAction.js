@@ -89,7 +89,7 @@ export const createClass = (className) => async (dispatch) => {
           "Authorization":"Bearer "+ localStorage.getItem("jwt")
         },
       }
-  
+
       const { data } = await axios.get(
         `/api/class/all/${id}`,config )
   
@@ -97,6 +97,7 @@ export const createClass = (className) => async (dispatch) => {
         type: 'CLASS_DETAILS_SUCCESS',
         payload: data,
       })
+
     } catch (error) {
       dispatch({
         type: 'CLASS_DETAILS_FAIL',
@@ -107,3 +108,36 @@ export const createClass = (className) => async (dispatch) => {
       })
     }
   } 
+
+// GET A CLASS PROFILE
+export const getClassProfile = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: 'CLASS_PROFILE_REQ',
+    })
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization":"Bearer "+ localStorage.getItem("jwt")
+      },
+    }
+
+    const { data } = await axios.get(
+      `/api/class/${id}`,config )
+
+    dispatch({
+      type: 'CLASS_PROFILE_SUCCESS',
+      payload: data,
+    })
+    
+  } catch (error) {
+    dispatch({
+      type: 'CLASS_PROFILE_FAIL',
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}  

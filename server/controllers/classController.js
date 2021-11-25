@@ -104,14 +104,64 @@ const getClassById = asyncHandler(async (req, res)=>{
 //GET ALL CLASS OF A USER
 const getAllClassOfUser = asyncHandler(async(req, res)=>{
 
-        const classes = await User.findById(req.params.id).populate('createdClass')
+        const {createdClass} = await User.findById(req.params.id).populate('createdClass')
 
-        const classes2 = await User.findById(req.params.id).populate('enrolledClass.classId')
+        const {enrolledClass} = await User.findById(req.params.id).populate('enrolledClass.classId')
+
+        let createdClassArray =[]
+        let enrolledClassArray = []
+
+        console.log(enrolledClass)
+        console.log(createdClass)
+        createdClass.forEach(async ({_id, className, enrolledStudents})=>{
+
+            createdClassArray.push({_id, className, numberOfEnrolledStudents: enrolledStudents.length})
+
+        })
+
+        enrolledClass.forEach(async ({classId:{_id, className}, totalScore})=>{
+
+            enrolledClassArray.push({_id,className, totalScore})
+
+        })
+
+        // console.log(createdClassArray);
+        // console.log(enrolledClassArray);
 
         res.status(200).json({
-            createdClass: classes.createdClass,
-            enrolledClass: classes2.enrolledClass
+            createdClassArray,
+            enrolledClassArray
         })
+
+})
+
+//ADD A TOPIC TO THE CLASS
+const addTopic = asyncHandler(async(req, res) =>{
+
+
+    const {topicName, topicTheory} = req.body
+    const foundClass = await Class.findById(req.params.id)
+
+    console.log(req.params.id)
+
+    if(!foundClass){
+        res.status(404)
+        throw new Error('CLass is not found')
+    }
+
+    if(String(req.user._id)!=String(foundClass.classTeacher)){
+        res.status(400)
+        throw new Error('You are not the class Taecher of this class')
+
+    }
+
+    await foundClass.topics.push({topicName, topicTheory})
+    await foundClass.save()
+
+    res.status(200).json({
+        message: "Successfully added a new topic to the class"
+    })
+
 
 })
 
@@ -146,7 +196,8 @@ module.exports={
     createClass,
     joinClass,
     getClassById,
-    getAllClassOfUser
+    getAllClassOfUser,
+    addTopic
     // getAllCreatedClass,
     // getAllEnrolledClass
 }

@@ -51,18 +51,18 @@ const createQuiz = asyncHandler(async (req, res) => {
   }) 
 
 
-// GET A QUIZ BY ID
-const getQuizById = asyncHandler(async (req, res) => {
+// // GET A QUIZ BY ID
+// const getQuizById = asyncHandler(async (req, res) => {
 
-    const quiz = await Quiz.findById(req.params.id) ;
-    if(quiz){
-        res.json(quiz);
-    }else{
-        res.status(404);
-        throw new Error('Quiz not found')
-    }
+//     const quiz = await Quiz.findById(req.params.id) ;
+//     if(quiz){
+//         res.json(quiz);
+//     }else{
+//         res.status(404);
+//         throw new Error('Quiz not found')
+//     }
 
-})
+// })
 
 //ALLOW USER TO TAKE QUIZ
 const allowUserForQuiz = asyncHandler(async(req, res)=>{
@@ -225,7 +225,6 @@ const evaluateQuiz = asyncHandler(async(req, res) =>{
 
 module.exports={
     createQuiz,
-    getQuizById,
     allowUserForQuiz,
     evaluateQuiz
 }

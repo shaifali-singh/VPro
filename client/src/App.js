@@ -10,6 +10,7 @@ import HomeScreen from './screens/HomeScreen';
 import ErrorScreen from './screens/ErrorScreen';
 import CreateClassScreen from './screens/CreateClassScreen';
 import JoinClassScreen from './screens/JoinClassScreen';
+import ClassScreen from './screens/ClassScreen';
 
 const App=()=> {
   return (
@@ -19,6 +20,7 @@ const App=()=> {
         <Switch>
             <Route path='/'               component={LandingScreen} exact={true}/>
             <Route path='/home'           component={HomeScreen} exact={true}/>
+            <Route path='/class/:classId'          component={ClassScreen} exact={true}/>
             <Route path='/createClass'    component ={CreateClassScreen} exact={true}/>
             <Route path='/joinClass'      component={JoinClassScreen} exact={true}/>
             <Route path='/register'       component={RegisterScreen} exact={true}/>
