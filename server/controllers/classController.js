@@ -126,10 +126,35 @@ const getAllEnrolledClass = asyncHandler(async (req, res) => {
 
 })
 
+const getClassLeaderboard = asyncHandler(async (req, res) => {
+    const foundClass = await Class.findById(req.params.id);
+    if(!foundClass){
+        res.status(404);
+        throw new Error('Class not found.')
+    }
+    
+    const enrolledClass= foundClass.populate('enrolledStudents');
+    
+    const enrolledStudents = enrolledClass.enrolledStudents;
+    
+    enrolledStudents.populate('enrolledClass').sort('-enrolledClass.totalScore').exec((err,students) => {
+        
+        console.log(students);
+        res.status(200).json(
+            students);
+        throw new Error('Leaderboard list not found');
+    })
+
+    console.log(foundClass);
+    console.log(enrolledClass);
+    console.log(enrolledStudents);
+    
+})
 module.exports={
     createClass,
     joinClass,
     getClassById,
     getAllCreatedClass,
-    getAllEnrolledClass
+    getAllEnrolledClass,
+    getClassLeaderboard
 }
