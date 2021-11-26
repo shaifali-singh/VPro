@@ -9,7 +9,7 @@ router.route('/create').post(protect, createClass);
 
 router.route('/join').post(protect,joinClass);
 
-router.route('/:id').get(protect,getClassById);
+router.route('/:id').get(getClassById);
 
 router.route('/all/:id').get(protect, getAllClassOfUser)
 

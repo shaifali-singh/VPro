@@ -171,28 +171,81 @@ const addTopic = asyncHandler(async(req, res) =>{
 })
 
 const getClassLeaderboard = asyncHandler(async (req, res) => {
+
+    // Class.findById(req.params.id)
+    // .populate({
+    //     path: 'enrolledStudents',
+    //     model: 'User',
+    //     populate: {
+    //         path: 'enrolledClass',
+    //         model: 'enrolledClassSchema'
+    //     }
+    // })
+    // .exec((err,currentClass) => {
+    //     console.log('currentClass');
+    //     console.log(currentClass.enrolledStudents);
+    // })
+
     const foundClass = await Class.findById(req.params.id);
     if(!foundClass){
         res.status(404);
         throw new Error('Class not found.')
     }
-    
-    const enrolledClass= foundClass.populate('enrolledStudents');
-    
-    const enrolledStudents = enrolledClass.enrolledStudents;
-    
-    enrolledStudents.populate('enrolledClass').sort('-enrolledClass.totalScore').exec((err,students) => {
-        
-        console.log(students);
-        res.status(200).json(
-            students);
-        throw new Error('Leaderboard list not found');
-    })
 
-    console.log(foundClass);
-    console.log(enrolledClass);
-    console.log(enrolledStudents);
+    // console.log(foundClass);
+
+
+    const enrolledClass= await foundClass.populate('enrolledStudents');
+    // console.log("enrolledClass");
+    // console.log(enrolledClass);
+
+
+    const enrolledStudents = enrolledClass.enrolledStudents;
+    // console.log("enrolledStudents");
+    // console.log(enrolledStudents);
     
+    let students = [];
+
+    const sendData= () => {
+        students.sort((a,b) => {
+            return a.totalScore - b.totalScore;
+        })
+        
+        console.log("students");
+        console.log(students);
+        res.status(200).json(students);
+    }
+
+    enrolledStudents.forEach(async ({_id})=>{
+        
+        await User
+        .find( { _id : _id }, {}
+        ,{ enrolledClass :
+            { $elemMatch : 
+                { classId : req.params.id
+                }
+            }
+        })
+        .exec((err ,user) => {
+            // console.log("User");
+            // console.log(user[0]);
+            if(err)
+            {
+                console.log(err);
+                res.status(400);
+                throw new Error("Error in fetching database");
+            }
+            var obj = {
+                _id : user[0]._id,
+                name: user[0].name,
+                totalScore: user[0].enrolledClass[0].totalScore
+            };
+            students.push(obj);
+            console.log(students);
+        })
+        
+
+    })
 })
 //GET ALL CREATED CLASSES
 // const getAllCreatedClass = asyncHandler(async (req, res) => {
