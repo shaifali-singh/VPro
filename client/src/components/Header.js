@@ -31,8 +31,8 @@ const Header = ({history}) => {
                     <Nav className="ml-auto">
                         {userInfo?(
                             <NavDropdown title={userInfo.name} id='username'>
-                                <LinkContainer to="/profile">
-                                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                                <LinkContainer to="/home">
+                                    <NavDropdown.Item>Home Page</NavDropdown.Item>
                                 </LinkContainer>
                                 <LinkContainer to='/createClass'>
                                     <NavDropdown.Item>Create a Class</NavDropdown.Item>

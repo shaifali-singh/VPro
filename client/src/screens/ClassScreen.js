@@ -11,6 +11,8 @@ const ClassScreen = ({ history }) => {
 
   const dispatch = useDispatch()
 
+  let topicUrl;
+
   const {classId} = useParams()
 
   const classProfile = useSelector((state) => state.classProfile)
@@ -36,22 +38,25 @@ const ClassScreen = ({ history }) => {
         <Message variant='danger'>{error}</Message>
       ) : (
         <Table striped bordered hover responsive className='table-sm'>
+
             { classInfo ? classInfo.topics.map(({topicName, topicTheory}, index)=>{
 
                 let quizUrl = `/quiz/${(classInfo.quizzes)[index]}`
+                topicUrl = `/class/addTopic/${classInfo._id}`
                 return (
                     <div className="justify-content-center">
                         {index+1}
                         <h3>Chapter : {topicName}</h3>
                         <p> Chapter Notes : {topicTheory}</p>
                         {userInfo._id != classInfo.classTeacher && <Link to={quizUrl}><h6>Take Quiz</h6></Link>}
-                        {userInfo._id==classInfo.classTeacher && <Link><h6>Add a new chapter</h6></Link>}
                     </div>
                 )
-            }) : <h5>Loading...</h5>
+    
+            })
+             : <h5>Loading...</h5>
 
         }
-          
+        {classInfo && userInfo._id==classInfo.classTeacher && <Link to={topicUrl}><h6>Add a new chapter</h6></Link>}
         </Table>
       )}
     </>

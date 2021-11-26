@@ -141,3 +141,42 @@ export const getClassProfile = (id) => async (dispatch) => {
     })
   }
 }  
+
+
+//ADD A TOPIC TO THE CLASS
+export const addTopic = ({topicName, topicTheory, classId}) => async (dispatch) => {
+  try {
+    dispatch({
+      type: 'ADD_TOPIC_REQ',
+    })
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization":"Bearer "+ localStorage.getItem("jwt")
+      },
+    }
+
+    const { data } = await axios.post(
+      `/api/class/addTopic/${classId}`,
+      { topicName, topicTheory},
+      config
+    )
+
+    dispatch({
+      type: 'ADD_TOPIC_SUCCESS',
+      payload: data,
+    })
+
+    console.log(data) //testing
+
+  } catch (error) {
+    dispatch({
+      type: 'ADD_TOPIC_FAIL',
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}

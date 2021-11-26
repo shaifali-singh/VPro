@@ -60,3 +60,18 @@ export const classProfileReducer = (state={},action)=>{
 }
 
 
+export const addTopicReducer = (state={},action)=>{
+    switch(action.type){
+        case 'ADD_TOPIC_REQ':
+            return {loading:true}
+
+        case 'ADD_TOPIC_SUCCESS':
+            return {loading:false, topicInfo:action.payload}
+            
+        case 'ADD_TOPIC_FAIL':
+            return {loading:false, error:action.payload}
+        default:
+            return state    
+    }
+}
+
