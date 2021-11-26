@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {createQuiz, getQuizById, evaluateQuiz, allowUserForQuiz} = require('../controllers/quizController');
+const {createQuiz, evaluateQuiz, allowUserForQuiz} = require('../controllers/quizController');
 const {protect} = require('../middleware/authMiddleware');
 
 

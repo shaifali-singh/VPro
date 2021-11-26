@@ -75,3 +75,108 @@ export const createClass = (className) => async (dispatch) => {
     }
   }
 
+
+  //GET ALL CLASS OF A USER
+  export const getAllClassOfUser = (id) => async (dispatch) => {
+    try {
+      dispatch({
+        type: 'CLASS_DETAILS_REQ',
+      })
+  
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization":"Bearer "+ localStorage.getItem("jwt")
+        },
+      }
+
+      const { data } = await axios.get(
+        `/api/class/all/${id}`,config )
+  
+      dispatch({
+        type: 'CLASS_DETAILS_SUCCESS',
+        payload: data,
+      })
+
+    } catch (error) {
+      dispatch({
+        type: 'CLASS_DETAILS_FAIL',
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  } 
+
+// GET A CLASS PROFILE
+export const getClassProfile = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: 'CLASS_PROFILE_REQ',
+    })
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization":"Bearer "+ localStorage.getItem("jwt")
+      },
+    }
+
+    const { data } = await axios.get(
+      `/api/class/${id}`,config )
+
+    dispatch({
+      type: 'CLASS_PROFILE_SUCCESS',
+      payload: data,
+    })
+    
+  } catch (error) {
+    dispatch({
+      type: 'CLASS_PROFILE_FAIL',
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}  
+
+
+//ADD A TOPIC TO THE CLASS
+export const addTopic = ({topicName, topicTheory, classId}) => async (dispatch) => {
+  try {
+    dispatch({
+      type: 'ADD_TOPIC_REQ',
+    })
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization":"Bearer "+ localStorage.getItem("jwt")
+      },
+    }
+
+    const { data } = await axios.post(
+      `/api/class/addTopic/${classId}`,
+      { topicName, topicTheory},
+      config
+    )
+
+    dispatch({
+      type: 'ADD_TOPIC_SUCCESS',
+      payload: data,
+    })
+
+    console.log(data) //testing
+
+  } catch (error) {
+    dispatch({
+      type: 'ADD_TOPIC_FAIL',
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}

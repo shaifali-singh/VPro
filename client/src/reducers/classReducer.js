@@ -28,3 +28,50 @@ export const joinClassReducer = (state={},action)=>{
             return state    
     }
 }
+
+export const classDetailOfUserReducer = (state={},action)=>{
+    switch(action.type){
+        case 'CLASS_DETAILS_REQ':
+            return {loading:true}
+
+        case 'CLASS_DETAILS_SUCCESS':
+            return {loading:false, allClassOfUser:action.payload}
+            
+        case 'CLASS_DETAILS_FAIL':
+            return {loading:false, error:action.payload}
+        default:
+            return state    
+    }
+}
+
+export const classProfileReducer = (state={},action)=>{
+    switch(action.type){
+        case 'CLASS_PROFILE_REQ':
+            return {loading:true}
+
+        case 'CLASS_PROFILE_SUCCESS':
+            return {loading:false, classInfo:action.payload}
+            
+        case 'CLASS_PROFILE_FAIL':
+            return {loading:false, error:action.payload}
+        default:
+            return state    
+    }
+}
+
+
+export const addTopicReducer = (state={},action)=>{
+    switch(action.type){
+        case 'ADD_TOPIC_REQ':
+            return {loading:true}
+
+        case 'ADD_TOPIC_SUCCESS':
+            return {loading:false, topicInfo:action.payload}
+            
+        case 'ADD_TOPIC_FAIL':
+            return {loading:false, error:action.payload}
+        default:
+            return state    
+    }
+}
+

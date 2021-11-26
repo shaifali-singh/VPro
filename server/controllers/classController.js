@@ -18,6 +18,8 @@ const createClass = asyncHandler(async (req, res) => {
 
     const randCode = randomstring.generate(8);
     
+    console.log("Class created", req.user._id)
+
     const newClass = await Class.create({
         className,
         classCode: randCode,
@@ -80,7 +82,7 @@ const createClass = asyncHandler(async (req, res) => {
 
         res.status(201).json({
                 _id: req.user._id,
-                classCode 
+                className: foundClass.className 
         })
 
 
@@ -95,34 +97,76 @@ const getClassById = asyncHandler(async (req, res)=>{
             throw new Error('Class not found.')
         }
 
+        if((String(foundClass.classTeacher)!=String(req.user._id)) && !(foundClass.enrolledStudents.includes(req.user._id))){
+            res.status(400)
+            throw new Error('You are not enrolled in this class')
+        }
+
         res.status(200).json(foundClass);
 
 })
 
-//GET ALL CREATED CLASSES
-const getAllCreatedClass = asyncHandler(async (req, res) => {
-     
-        User.findById(req.params.id)
-        .populate('createdClass').exec((err, classes)=>{
-                res.status(200).json({
-                    _id: req.user._id,
-                    createdClass : classes.createdClass
-                })
+//GET ALL CLASS OF A USER
+const getAllClassOfUser = asyncHandler(async(req, res)=>{
+
+        const {createdClass} = await User.findById(req.params.id).populate('createdClass')
+
+        const {enrolledClass} = await User.findById(req.params.id).populate('enrolledClass.classId')
+
+        let createdClassArray =[]
+        let enrolledClassArray = []
+
+        console.log(enrolledClass)
+        console.log(createdClass)
+        createdClass.forEach(async ({_id, className, enrolledStudents})=>{
+
+            createdClassArray.push({_id, className, numberOfEnrolledStudents: enrolledStudents.length})
+
+        })
+
+        enrolledClass.forEach(async ({classId:{_id, className}, totalScore})=>{
+
+            enrolledClassArray.push({_id,className, totalScore})
+
+        })
+
+        // console.log(createdClassArray);
+        // console.log(enrolledClassArray);
+
+        res.status(200).json({
+            createdClassArray,
+            enrolledClassArray
         })
 
 })
 
-//GET ALL ENROLLED CLASSES
-const getAllEnrolledClass = asyncHandler(async (req, res) => {
-     
-    User.findById(req.params.id)
-    .populate('enrolledClass.classId').exec((err, classes)=>{
+//ADD A TOPIC TO THE CLASS
+const addTopic = asyncHandler(async(req, res) =>{
 
-            res.status(200).json({
-                _id: req.user._id,
-                enrolledClass : classes.enrolledClass
-            })
+
+    const {topicName, topicTheory} = req.body
+    const foundClass = await Class.findById(req.params.id)
+
+    console.log(req.params.id)
+
+    if(!foundClass){
+        res.status(404)
+        throw new Error('CLass is not found')
+    }
+
+    if(String(req.user._id)!=String(foundClass.classTeacher)){
+        res.status(400)
+        throw new Error('You are not the class Taecher of this class')
+
+    }
+
+    await foundClass.topics.push({topicName, topicTheory})
+    await foundClass.save()
+
+    res.status(200).json({
+        message: "Successfully added a new topic to the class"
     })
+
 
 })
 
@@ -150,11 +194,40 @@ const getClassLeaderboard = asyncHandler(async (req, res) => {
     console.log(enrolledStudents);
     
 })
+//GET ALL CREATED CLASSES
+// const getAllCreatedClass = asyncHandler(async (req, res) => {
+     
+//         User.findById(req.params.id)
+//         .populate('createdClass').exec((err, classes)=>{
+//                 res.status(200).json({
+//                     _id: req.user._id,
+//                     createdClass : classes.createdClass
+//                 })
+//         })
+
+// })
+
+//GET ALL ENROLLED CLASSES
+// const getAllEnrolledClass = asyncHandler(async (req, res) => {
+     
+//     User.findById(req.params.id)
+//     .populate('enrolledClass.classId').exec((err, classes)=>{
+
+//             res.status(200).json({
+//                 _id: req.user._id,
+//                 enrolledClass : classes.enrolledClass
+//             })
+//     })
+
+// })
+
 module.exports={
     createClass,
     joinClass,
     getClassById,
-    getAllCreatedClass,
-    getAllEnrolledClass,
-    getClassLeaderboard
+    getClassLeaderboard,
+    getAllClassOfUser,
+    addTopic
+    // getAllCreatedClass,
+    // getAllEnrolledClass
 }

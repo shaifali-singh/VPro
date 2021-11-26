@@ -25,12 +25,20 @@ const Header = ({history}) => {
                     <Navbar.Brand>VPro</Navbar.Brand>
                     </LinkContainer>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Nav.Link href='/joinClass' style={{color:'white'}}>JOIN A CLASS</Nav.Link>
+                <Nav.Link href='/createClass' style={{color:'white'}}>CREATE A CLASS</Nav.Link>
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ml-auto">
                         {userInfo?(
                             <NavDropdown title={userInfo.name} id='username'>
-                                <LinkContainer to="/profile">
-                                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                                <LinkContainer to="/home">
+                                    <NavDropdown.Item>Home Page</NavDropdown.Item>
+                                </LinkContainer>
+                                <LinkContainer to='/createClass'>
+                                    <NavDropdown.Item>Create a Class</NavDropdown.Item>
+                                </LinkContainer>
+                                <LinkContainer to='/joinClass'>
+                                    <NavDropdown.Item>Join a Class</NavDropdown.Item>
                                 </LinkContainer>
                                 <NavDropdown.Item onClick={logoutHandler}>
                                     LogOut
@@ -42,19 +50,6 @@ const Header = ({history}) => {
                             </LinkContainer>
                             )
                         }
-                        {userInfo && userInfo.isAdmin && (
-                            <NavDropdown title='Admin' id='adminMenu'>
-                            <LinkContainer to='/admin/userlist'>
-                                <NavDropdown.Item>Users</NavDropdown.Item>
-                            </LinkContainer>
-                            <LinkContainer to='admin/productlist'>
-                                <NavDropdown.Item>Products</NavDropdown.Item>
-                            </LinkContainer>
-                            <LinkContainer to='admin/orderlist'>
-                                <NavDropdown.Item>Orders</NavDropdown.Item>
-                            </LinkContainer>
-                        </NavDropdown>
-                        )}
                     </Nav>
                 </Navbar.Collapse>
                 </Container>

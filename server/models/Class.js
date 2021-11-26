@@ -20,6 +20,17 @@ const classSchema = mongoose.Schema(
                ref : "User"
 
            } ],
+        
+        topics:[{
+            topicName: {
+                type: String,
+                required: true
+            },
+            topicTheory :{
+                type: String,
+                required: true
+            }
+        }],
            
         quizzes :[
             {
