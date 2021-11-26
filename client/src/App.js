@@ -22,6 +22,7 @@ const App=()=> {
             <Route path='/home'           component={HomeScreen} exact={true}/>
             <Route path='/class/:classId'          component={ClassScreen} exact={true}/>
             <Route path='/createClass'    component ={CreateClassScreen} exact={true}/>
+            <Route path='/quiz/:quizId'                />
             <Route path='/joinClass'      component={JoinClassScreen} exact={true}/>
             <Route path='/register'       component={RegisterScreen} exact={true}/>
             <Route path='/login'          component={LoginScreen} exact={true}/>

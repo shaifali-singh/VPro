@@ -2,6 +2,7 @@ import {combineReducers,applyMiddleware, createStore,compose} from 'redux';
 import thunk from 'redux-thunk';
 import { userLoginReducer, userRegisterReducer, } from './reducers/userReducer';   
 import { createClassReducer, joinClassReducer, classDetailOfUserReducer, classProfileReducer } from './reducers/classReducer';
+import {getQuizReducer} from './reducers/quizReducer'
 
 const reducer = combineReducers({
     userLogin: userLoginReducer,
@@ -9,7 +10,8 @@ const reducer = combineReducers({
     newClass : createClassReducer,
     joinNewClass : joinClassReducer,
     allClass: classDetailOfUserReducer,
-    classProfile : classProfileReducer
+    classProfile : classProfileReducer,
+    quiz : getQuizReducer
 });
 
 

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useParams, Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap'
 import { Table, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,19 +11,21 @@ const ClassScreen = ({ history }) => {
 
   const dispatch = useDispatch()
 
+  const {classId} = useParams()
+
   const classProfile = useSelector((state) => state.classProfile)
-  const { loading, error, classDetail } = classProfile
+  const { loading, error, classInfo } = classProfile
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
   useEffect(() => {
-    if (userInfo) {
-      dispatch(getClassProfile())
-    } else {
-      history.push('/login')
+    if (!userInfo) {
+        history.push('/login')
+    } else if(!classInfo) {
+        dispatch(getClassProfile(classId))
     }
-  }, [dispatch, history, userInfo])
+  }, [dispatch, history, userInfo, classInfo])
 
   return (
     <>
@@ -33,38 +36,22 @@ const ClassScreen = ({ history }) => {
         <Message variant='danger'>{error}</Message>
       ) : (
         <Table striped bordered hover responsive className='table-sm'>
-          {/* <tbody>
-            {users.map((user) => (
-              <tr key={user._id}>
-                <td>{user._id}</td>
-                <td>{user.name}</td>
-                <td>
-                  <a href={`mailto:${user.email}`}>{user.email}</a>
-                </td>
-                <td>
-                  {user.isAdmin==="true" ? (
-                    <i className='fas fa-check' style={{ color: 'green' }}></i>
-                  ) : (
-                    <i className='fas fa-times' style={{ color: 'red' }}></i>
-                  )}
-                </td>
-                <td>
-                  <LinkContainer to={`/admin/user/${user._id}/edit`}>
-                    <Button variant='light' className='btn-sm'>
-                      <i className='fas fa-edit'></i>
-                    </Button>
-                  </LinkContainer>
-                  <Button
-                    variant='danger'
-                    className='btn-sm'
-                    onClick={() => deleteHandler(user._id)}
-                  >
-                    <i className='fas fa-trash'></i>
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody> */}
+            { classInfo ? classInfo.topics.map(({topicName, topicTheory}, index)=>{
+
+                let quizUrl = `/quiz/${(classInfo.quizzes)[index]}`
+                return (
+                    <div className="justify-content-center">
+                        {index+1}
+                        <h3>Chapter : {topicName}</h3>
+                        <p> Chapter Notes : {topicTheory}</p>
+                        {userInfo._id != classInfo.classTeacher && <Link to={quizUrl}><h6>Take Quiz</h6></Link>}
+                        {userInfo._id==classInfo.classTeacher && <Link><h6>Add a new chapter</h6></Link>}
+                    </div>
+                )
+            }) : <h5>Loading...</h5>
+
+        }
+          
         </Table>
       )}
     </>

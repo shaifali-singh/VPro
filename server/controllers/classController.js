@@ -97,6 +97,11 @@ const getClassById = asyncHandler(async (req, res)=>{
             throw new Error('Class not found.')
         }
 
+        if((String(foundClass.classTeacher)!=String(req.user._id)) && !(foundClass.enrolledStudents.includes(req.user._id))){
+            res.status(400)
+            throw new Error('You are not enrolled in this class')
+        }
+
         res.status(200).json(foundClass);
 
 })

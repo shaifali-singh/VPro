@@ -50,7 +50,7 @@ export const classProfileReducer = (state={},action)=>{
             return {loading:true}
 
         case 'CLASS_PROFILE_SUCCESS':
-            return {loading:false, classProfile:action.payload}
+            return {loading:false, classInfo:action.payload}
             
         case 'CLASS_PROFILE_FAIL':
             return {loading:false, error:action.payload}

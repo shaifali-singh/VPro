@@ -34,11 +34,11 @@ const HomeScreen = ({location, history}) => {
             <Row className="justify-content-center">
             { allClassOfUser?
                 allClassOfUser.enrolledClassArray.map(({_id, className, totalScore}) =>{
+                    const url = `/class/${_id}`
                     return(
                         <div key={_id} >
-                        
                             <Col>
-                                <h6>Class Name </h6> <a href={'/class/' + _id}>{className}</a>
+                                <h6>Class Name </h6> <Link to={url}>{className}</Link>
                             </Col>
                             <Col>
                                 <h6>Class Score</h6> {totalScore}
@@ -54,11 +54,12 @@ const HomeScreen = ({location, history}) => {
             <Row className="justify-content-center">
             { allClassOfUser?
                 allClassOfUser.createdClassArray.map(({_id, className, numberOfEnrolledStudents}) =>{
+                    const url = `/class/${_id}`
                     return(
                         <div key={_id} >
                         
                             <Col>
-                                <h6>Class Name</h6> <a href={'/class/' + _id}>{className}</a>
+                                <h6>Class Name</h6> <Link to={url}>{className}</Link>
                             </Col>
                             <Col>
                                 <h6>Number of Enrolled Students</h6> {numberOfEnrolledStudents}
