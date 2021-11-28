@@ -7,7 +7,7 @@ const User = require('../models/User');
 
 // CREATE A NEW CLASS
 const createClass = asyncHandler(async (req, res) => {
-    const { className } = req.body
+    const { className,classDescription } = req.body
   
     const existClass = await Class.findOne({ className })
   
@@ -22,6 +22,7 @@ const createClass = asyncHandler(async (req, res) => {
 
     const newClass = await Class.create({
         className,
+        classDescription,
         classCode: randCode,
         classTeacher: req.user._id
     })

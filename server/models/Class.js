@@ -10,6 +10,9 @@ const classSchema = mongoose.Schema(
            type: String,
            required: true
        },
+       classDescription:{
+            type: String
+       },
        classTeacher: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"

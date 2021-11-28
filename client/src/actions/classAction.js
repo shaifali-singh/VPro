@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const createClass = (className) => async (dispatch) => {
+export const createClass = (className,classDescription) => async (dispatch) => {
     try {
       dispatch({
         type: 'CREATE_CLASS_REQ',
@@ -15,7 +15,7 @@ export const createClass = (className) => async (dispatch) => {
   
       const { data } = await axios.post(
         '/api/class/create',
-        { className},
+        { className,classDescription},
         config
       )
   
